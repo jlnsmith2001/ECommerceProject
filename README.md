@@ -1,5 +1,6 @@
 # ECommerceProject
 
 ## Authors:
-**Julien Smith**
+**Julien Smith**,
+
 **Wilson Yuong** 
