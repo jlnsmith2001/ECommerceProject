@@ -1,6 +1,3 @@
-create database e_commerce_db;
-use  e_commerce_db; 
-drop database e_commerce;
 CREATE DATABASE IF NOT EXISTS e_commerce;
 USE e_commerce;
 
@@ -323,9 +320,7 @@ INSERT INTO Transactions (ProductID, UserID, TransactionDate) VALUES
 (30, 18, '2025-06-15 10:10:00'),
 (17, 6, '2025-04-25 17:05:00'),
 (18, 9, '2025-05-27 12:45:00');
--- ============================
--- REFUNDS
--- ============================
+
 INSERT INTO Refunds (ProductID, UserID, TransactionDate, RefundReason, IssueDate, RefundDate) VALUES
 (2, 3, '2025-01-11 09:15:00', 'Item defective', '2025-02-01', '2025-02-05'),
 (4, 2, '2025-01-13 11:05:00', 'Wrong item delivered', '2025-02-03', '2025-02-07'),
@@ -358,4 +353,77 @@ WHERE ItemID = 4;
 
 -- Delete a product from inventory
 
-SELECT * From users
+DELETE FROM ProductDetails
+WHERE ItemID = 4; 
+
+DELETE FROM inventory
+WHERE ItemID = 4; 
+
+-- Get a list of the most popular products for a given time range
+-- (listed most popular products and their categories between Janurary 10th and March 10th)
+SELECT p.ProductName, p.ProductCategory, COUNT(p.ProductName) AS quantity_sold
+FROM products AS p
+LEFT JOIN transactions as t
+ON p.ProductID = t.ProductID
+WHERE t.TransactionDate BETWEEN "2025-01-10" AND "2025-03-10"
+GROUP BY p.ProductName,
+p.ProductCategory
+ORDER BY quantity_sold DESC;
+
+-- Get a list of the least popular products for a given time range
+-- (listed LEAST popular products and their categories between April 18th and May 18th)
+SELECT p.ProductName, p.ProductCategory, COUNT(p.ProductName) AS quantity_sold
+FROM products AS p
+LEFT JOIN transactions as t
+ON p.ProductID = t.ProductID
+WHERE t.TransactionDate BETWEEN "2025-04-18" AND "2025-05-18"
+GROUP BY p.ProductName,
+p.ProductCategory
+ORDER BY quantity_sold ASC;
+
+-- Get a list of users who haven't purchased something in a few months to send promotional emails to
+SELECT u.UserName, u.Email, MAX(t.TransactionDate) AS LastPurchase, p.ProductCategory, p.ProductName
+FROM users as u
+LEFT JOIN transactions AS t
+ON u.UserID = t.UserID
+LEFT JOIN products as p
+ON p.ProductID = t.ProductID
+GROUP BY u.UserID, u.UserName, u.Email, p.ProductCategory, p.ProductName
+HAVING LastPurchase BETWEEN "2025-01-01" AND "2025-05-01";
+
+
+
+
+ALTER TABLE ProductDetails
+ADD ReleaseDate DATE; 
+
+UPDATE ProductDetails SET ReleaseDate = '2021-03-15' WHERE ProductID = 1;
+UPDATE ProductDetails SET ReleaseDate = '2021-07-22' WHERE ProductID = 2;
+UPDATE ProductDetails SET ReleaseDate = '2023-01-10' WHERE ProductID = 3;
+UPDATE ProductDetails SET ReleaseDate = '2022-05-08' WHERE ProductID = 4;
+UPDATE ProductDetails SET ReleaseDate = '2021-11-17' WHERE ProductID = 5;
+UPDATE ProductDetails SET ReleaseDate = '2022-08-03' WHERE ProductID = 6;
+UPDATE ProductDetails SET ReleaseDate = '2023-06-14' WHERE ProductID = 7;
+UPDATE ProductDetails SET ReleaseDate = '2024-02-20' WHERE ProductID = 8;
+UPDATE ProductDetails SET ReleaseDate = '2021-09-29' WHERE ProductID = 9;
+UPDATE ProductDetails SET ReleaseDate = '2022-12-05' WHERE ProductID = 10;
+UPDATE ProductDetails SET ReleaseDate = '2023-04-18' WHERE ProductID = 11;
+UPDATE ProductDetails SET ReleaseDate = '2022-10-11' WHERE ProductID = 12;
+UPDATE ProductDetails SET ReleaseDate = '2021-06-25' WHERE ProductID = 13;
+UPDATE ProductDetails SET ReleaseDate = '2023-03-07' WHERE ProductID = 14;
+UPDATE ProductDetails SET ReleaseDate = '2022-07-19' WHERE ProductID = 15;
+UPDATE ProductDetails SET ReleaseDate = '2021-12-01' WHERE ProductID = 16;
+UPDATE ProductDetails SET ReleaseDate = '2024-01-09' WHERE ProductID = 17;
+UPDATE ProductDetails SET ReleaseDate = '2023-09-13' WHERE ProductID = 18;
+UPDATE ProductDetails SET ReleaseDate = '2022-04-27' WHERE ProductID = 19;
+UPDATE ProductDetails SET ReleaseDate = '2024-03-21' WHERE ProductID = 20;
+UPDATE ProductDetails SET ReleaseDate = '2023-11-06' WHERE ProductID = 21;
+UPDATE ProductDetails SET ReleaseDate = '2022-02-15' WHERE ProductID = 22;
+UPDATE ProductDetails SET ReleaseDate = '2024-05-02' WHERE ProductID = 23;
+UPDATE ProductDetails SET ReleaseDate = '2023-08-24' WHERE ProductID = 24;
+UPDATE ProductDetails SET ReleaseDate = '2022-06-30' WHERE ProductID = 25;
+UPDATE ProductDetails SET ReleaseDate = '2024-04-12' WHERE ProductID = 26;
+UPDATE ProductDetails SET ReleaseDate = '2023-10-17' WHERE ProductID = 27;
+UPDATE ProductDetails SET ReleaseDate = '2022-09-08' WHERE ProductID = 28;
+UPDATE ProductDetails SET ReleaseDate = '2024-06-04' WHERE ProductID = 29;
+UPDATE ProductDetails SET ReleaseDate = '2023-12-19' WHERE ProductID = 30;
